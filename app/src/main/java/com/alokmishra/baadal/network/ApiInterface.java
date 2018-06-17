@@ -21,6 +21,6 @@ public interface ApiInterface {
     Call<WeatherForecast> getForecastDaily(@Query("q") String city, @Query("key") String apiKey);*/
 
 
-    @GET()
-    Call<ForecastModel> getForeCast(@Query("q") String forcast);
+    @GET("/yql")
+    Call<ForecastModel> getForeCast(@Query("q") String forcast, );
 }

@@ -2,10 +2,15 @@ package com.alokmishra.baadal.module;
 
 import android.util.Log;
 
+import com.alokmishra.baadal.model.ForecastModel;
 import com.alokmishra.baadal.network.ApiClient;
 import com.alokmishra.baadal.network.ApiInterface;
 
 import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WeatherFetchManager {
 
@@ -36,11 +41,16 @@ public class WeatherFetchManager {
     }
 
     public void hitApiCall() {
-        try {
-            getApiInterface().getForeCast(ApiInterface.FORECAST_URL).execute();
-        } catch (IOException e) {
-            Log.d(TAG, "Exception e "+e);
-            e.printStackTrace();
-        }
+            getApiInterface().getForeCast(ApiInterface.FORECAST_URL).enqueue(new Callback<ForecastModel>() {
+                @Override
+                public void onResponse(Call<ForecastModel> call, Response<ForecastModel> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<ForecastModel> call, Throwable t) {
+
+                }
+            });
     }
 }
