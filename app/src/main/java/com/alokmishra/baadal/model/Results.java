@@ -14,8 +14,4 @@ public class Results {
         return channel;
     }
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
-    }
-
 }

@@ -6,12 +6,12 @@ import com.alokmishra.baadal.view.model.ForecastItemData;
 
 public class ConversionUtils {
     public static CurrentWeatherItemData getCurretnWeatherDataFromForecastData(ForecastModel forecastModel) {
-       //TODO implement
-        return null;
+        CurrentWeatherItemData itemData = new CurrentWeatherItemData(forecastModel);
+        return itemData;
     }
 
     public static ForecastItemData getForecastItemDataFromForecastData(ForecastModel forecastModel) {
-        //TODO implement
-        return null;
+        ForecastItemData forecastItemData = new ForecastItemData(forecastModel);
+        return forecastItemData;
     }
 }
