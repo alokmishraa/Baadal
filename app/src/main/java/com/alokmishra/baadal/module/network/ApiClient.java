@@ -1,4 +1,4 @@
-package com.alokmishra.baadal.network;
+package com.alokmishra.baadal.module.network;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 

@@ -1,12 +1,8 @@
 package com.alokmishra.baadal.module;
 
-import android.util.Log;
-
 import com.alokmishra.baadal.model.ForecastModel;
-import com.alokmishra.baadal.network.ApiClient;
-import com.alokmishra.baadal.network.ApiInterface;
-
-import java.io.IOException;
+import com.alokmishra.baadal.module.network.ApiClient;
+import com.alokmishra.baadal.module.network.ApiInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
