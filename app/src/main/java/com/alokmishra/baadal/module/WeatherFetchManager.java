@@ -1,8 +1,14 @@
 package com.alokmishra.baadal.module;
 
+import android.arch.lifecycle.MutableLiveData;
+
+import com.alokmishra.baadal.module.util.ConversionUtils;
+import com.alokmishra.baadal.module.util.UrlUtils;
 import com.alokmishra.baadal.model.ForecastModel;
 import com.alokmishra.baadal.module.network.ApiClient;
 import com.alokmishra.baadal.module.network.ApiInterface;
+import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
+import com.alokmishra.baadal.view.model.ForecastItemData;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -11,36 +17,28 @@ import retrofit2.Response;
 public class WeatherFetchManager {
 
     private static final String TAG = WeatherFetchManager.class.getSimpleName();
-    private ApiInterface mApiInterface;
-    private static WeatherFetchManager sInstance;
+    private static ApiInterface sApiInterface;
 
-    private WeatherFetchManager() {
-
-    }
-
-    public static WeatherFetchManager getInstance() {
-        if(sInstance == null) {
-            synchronized (WeatherFetchManager.class) {
-                if(sInstance == null) {
-                    sInstance = new WeatherFetchManager();
-                }
+    public void getCurrentWeather(String city, final MutableLiveData<CurrentWeatherItemData> currentLiveData) {
+        getApiInterface().getForeCast(UrlUtils.getForecastUrlForCity(city)).enqueue(new Callback<ForecastModel>() {
+            @Override
+            public void onResponse(Call<ForecastModel> call, Response<ForecastModel> response) {
+                currentLiveData.postValue(ConversionUtils.getCurretnWeatherDataFromForecastData(response.body()));
             }
-        }
-        return sInstance;
+
+            @Override
+            public void onFailure(Call<ForecastModel> call, Throwable t) {
+
+            }
+        });
+
     }
 
-    private ApiInterface getApiInterface() {
-        if(mApiInterface == null) {
-            mApiInterface = ApiClient.getClient().create(ApiInterface.class);
-        }
-        return mApiInterface;
-    }
-
-    public void hitApiCall() {
-            getApiInterface().getForeCast(ApiInterface.FORECAST_URL).enqueue(new Callback<ForecastModel>() {
+    private void getForecastFOrCity(String city, final MutableLiveData<ForecastItemData> forecastLiveData) {
+            getApiInterface().getForeCast(UrlUtils.getForecastUrlForCity(city)).enqueue(new Callback<ForecastModel>() {
                 @Override
                 public void onResponse(Call<ForecastModel> call, Response<ForecastModel> response) {
-
+                    forecastLiveData.postValue(ConversionUtils.getForecastItemDataFromForecastData(response.body()));
                 }
 
                 @Override
@@ -48,5 +46,16 @@ public class WeatherFetchManager {
 
                 }
             });
+    }
+
+    private ApiInterface getApiInterface() {
+        if (sApiInterface == null) {
+            synchronized (WeatherFetchManager.class) {
+                if (sApiInterface == null) {
+                    sApiInterface = ApiClient.getClient().create(ApiInterface.class);
+                }
+            }
+        }
+        return sApiInterface;
     }
 }

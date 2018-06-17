@@ -8,9 +8,6 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
-    public static final String FORECAST_URL =
-            "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"nome, ak\")";
-
     /*@GET("/weather")
     Call<Weather> getWeatherList(@Query("q") String city,@Query("key") String apiKey);
 
@@ -21,6 +18,7 @@ public interface ApiInterface {
     Call<WeatherForecast> getForecastDaily(@Query("q") String city, @Query("key") String apiKey);*/
 
 
-    @GET("/yql")
-    Call<ForecastModel> getForeCast(@Query("q") String forcast, );
+    @GET("/yql?format=json")
+    Call<ForecastModel> getForeCast(@Query("q") String forcastQuesy);
+
 }

@@ -1,24 +1,38 @@
 package com.alokmishra.baadal;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.alokmishra.baadal.module.WeatherFetchManager;
+import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
+import com.alokmishra.baadal.viewmodel.CurrentCityWeatherViewModel;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class HomeFragment extends Fragment {
 
-    public static final String TAG = HomeFragment.class.getSimpleName();
+    private CurrentCityWeatherViewModel mViewModel;
+    private String mCity;
 
+    public static final String TAG = HomeFragment.class.getSimpleName();
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mViewModel = ViewModelProviders.of(this).get(CurrentCityWeatherViewModel.class);
+        mViewModel.init();
     }
 
     @Override
@@ -30,17 +44,29 @@ public class HomeFragment extends Fragment {
     }
 
     private void initView(View view) {
-        Button b = view.findViewById(R.id.button);
-        b.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void updateView(CurrentWeatherItemData currentWeatherItemData) {
+        //TODO init current weather item view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initObservers();
+
+        //TODO move this to appropriate place
+        mViewModel.start("Noida");
+
+    }
+
+    private void initObservers() {
+        mViewModel.getCurrentLiveData().observe(this, new Observer<CurrentWeatherItemData>() {
             @Override
-            public void onClick(View view) {
-                WeatherFetchManager.getInstance().hitApiCall();
+            public void onChanged(@Nullable CurrentWeatherItemData currentWeatherItemData) {
+                 updateView(currentWeatherItemData);
             }
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 }
