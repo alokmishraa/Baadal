@@ -3,6 +3,7 @@ package com.alokmishra.baadal;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 import com.alokmishra.baadal.viewmodel.CurrentCityWeatherViewModel;
@@ -21,6 +23,7 @@ public class HomeFragment extends Fragment {
 
     private CurrentCityWeatherViewModel mViewModel;
     private String mCity;
+    private TextView test;
 
     public static final String TAG = HomeFragment.class.getSimpleName();
     public static HomeFragment newInstance() {
@@ -44,10 +47,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void initView(View view) {
+        test = view.findViewById(R.id.test);
     }
 
     private void updateView(CurrentWeatherItemData currentWeatherItemData) {
         //TODO init current weather item view;
+        test.setText(currentWeatherItemData.getText() + " " + currentWeatherItemData.getCurrentTemp() + " " + currentWeatherItemData.getCity());
     }
 
     @Override
@@ -56,7 +61,12 @@ public class HomeFragment extends Fragment {
         initObservers();
 
         //TODO move this to appropriate place
-        mViewModel.start("Noida");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mViewModel.start("Noida");
+            }
+        }, 10000);
 
     }
 

@@ -18,7 +18,7 @@ public interface ApiInterface {
     Call<WeatherForecast> getForecastDaily(@Query("q") String city, @Query("key") String apiKey);*/
 
 
-    @GET("/yql?format=json")
+    @GET("v1/public/yql?format=json")
     Call<ForecastModel> getForeCast(@Query("q") String forcastQuesy);
 
 }

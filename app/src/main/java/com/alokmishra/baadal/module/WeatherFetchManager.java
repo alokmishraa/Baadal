@@ -34,7 +34,7 @@ public class WeatherFetchManager {
 
     }
 
-    private void getForecastFOrCity(String city, final MutableLiveData<ForecastItemData> forecastLiveData) {
+    public void getForecastForCity(String city, final MutableLiveData<ForecastItemData> forecastLiveData) {
             getApiInterface().getForeCast(UrlUtils.getForecastUrlForCity(city)).enqueue(new Callback<ForecastModel>() {
                 @Override
                 public void onResponse(Call<ForecastModel> call, Response<ForecastModel> response) {
