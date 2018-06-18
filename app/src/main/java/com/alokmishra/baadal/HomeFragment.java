@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 import com.alokmishra.baadal.view.model.ForecastItemData;
+import com.alokmishra.baadal.view.model.SingleDayForecastItemData;
+import com.alokmishra.baadal.view.widget.SingleDayForecastWidget;
 import com.alokmishra.baadal.viewmodel.ForecastViewModel;
 
 /**
@@ -23,7 +25,8 @@ public class HomeFragment extends Fragment {
 
     private ForecastViewModel mViewModel;
     private String mCity;
-    private TextView test;
+    private LinearLayout mForecastContainer;
+    private LayoutInflater mInflator;
 
     public static final String TAG = HomeFragment.class.getSimpleName();
     public static HomeFragment newInstance() {
@@ -36,6 +39,7 @@ public class HomeFragment extends Fragment {
         super.onAttach(context);
         mViewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
         mViewModel.init();
+        mInflator = LayoutInflater.from(context);
     }
 
     @Override
@@ -47,7 +51,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initView(View view) {
-        test = view.findViewById(R.id.test);
+        mForecastContainer = view.findViewById(R.id.forecast_container);
     }
 
     @Override
@@ -75,10 +79,15 @@ public class HomeFragment extends Fragment {
 
     private void updateCurrentUi(CurrentWeatherItemData currentWeatherItemData) {
         //TODO init current weather item view;
-        test.setText(currentWeatherItemData.getText() + " " + currentWeatherItemData.getCurrentTemp() + " " + currentWeatherItemData.getCity());
     }
 
     private void updateForecastUi(ForecastItemData forecastItemData) {
+        for(SingleDayForecastItemData item : forecastItemData.getForecastList()) {
+            SingleDayForecastWidget widget = (SingleDayForecastWidget) mInflator.inflate(R.layout.single_day_forecast, null);
+            widget.setData(item);
+            mForecastContainer.addView(widget);
+        }
+
         //TODO init forecast weather item view;
     }
 
