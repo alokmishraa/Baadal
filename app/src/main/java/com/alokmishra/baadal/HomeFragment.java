@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 import com.alokmishra.baadal.view.model.ForecastItemData;
 import com.alokmishra.baadal.view.model.SingleDayForecastItemData;
+import com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget;
 import com.alokmishra.baadal.view.widget.SingleDayForecastWidget;
 import com.alokmishra.baadal.viewmodel.ForecastViewModel;
 
@@ -27,6 +29,7 @@ public class HomeFragment extends Fragment {
     private String mCity;
     private LinearLayout mForecastContainer;
     private LayoutInflater mInflator;
+    private CurrentDayWeatherWidget mCurrentDayWeatherWidget;
 
     public static final String TAG = HomeFragment.class.getSimpleName();
     public static HomeFragment newInstance() {
@@ -52,6 +55,7 @@ public class HomeFragment extends Fragment {
 
     private void initView(View view) {
         mForecastContainer = view.findViewById(R.id.forecast_container);
+        mCurrentDayWeatherWidget = view.findViewById(R.id.current_day_widget);
     }
 
     @Override
@@ -78,7 +82,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateCurrentUi(CurrentWeatherItemData currentWeatherItemData) {
-        //TODO init current weather item view;
+        mCurrentDayWeatherWidget.setData(currentWeatherItemData);
     }
 
     private void updateForecastUi(ForecastItemData forecastItemData) {
@@ -87,8 +91,6 @@ public class HomeFragment extends Fragment {
             widget.setData(item);
             mForecastContainer.addView(widget);
         }
-
-        //TODO init forecast weather item view;
     }
 
 }
