@@ -3,7 +3,6 @@ package com.alokmishra.baadal;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,14 +13,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
-import com.alokmishra.baadal.viewmodel.CurrentCityWeatherViewModel;
+import com.alokmishra.baadal.view.model.ForecastItemData;
+import com.alokmishra.baadal.viewmodel.ForecastViewModel;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class HomeFragment extends Fragment {
 
-    private CurrentCityWeatherViewModel mViewModel;
+    private ForecastViewModel mViewModel;
     private String mCity;
     private TextView test;
 
@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mViewModel = ViewModelProviders.of(this).get(CurrentCityWeatherViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
         mViewModel.init();
     }
 
@@ -50,33 +50,36 @@ public class HomeFragment extends Fragment {
         test = view.findViewById(R.id.test);
     }
 
-    private void updateView(CurrentWeatherItemData currentWeatherItemData) {
-        //TODO init current weather item view;
-        test.setText(currentWeatherItemData.getText() + " " + currentWeatherItemData.getCurrentTemp() + " " + currentWeatherItemData.getCity());
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initObservers();
-
-        //TODO move this to appropriate place
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mViewModel.start("Noida");
-            }
-        }, 10000);
-
+        mViewModel.start("Noida");
     }
 
     private void initObservers() {
         mViewModel.getCurrentLiveData().observe(this, new Observer<CurrentWeatherItemData>() {
             @Override
             public void onChanged(@Nullable CurrentWeatherItemData currentWeatherItemData) {
-                 updateView(currentWeatherItemData);
+                 updateCurrentUi(currentWeatherItemData);
             }
         });
+
+        mViewModel.getForecastLiveData().observe(this, new Observer<ForecastItemData>() {
+            @Override
+            public void onChanged(@Nullable ForecastItemData forecastItemData) {
+                updateForecastUi(forecastItemData);
+            }
+        });
+    }
+
+    private void updateCurrentUi(CurrentWeatherItemData currentWeatherItemData) {
+        //TODO init current weather item view;
+        test.setText(currentWeatherItemData.getText() + " " + currentWeatherItemData.getCurrentTemp() + " " + currentWeatherItemData.getCity());
+    }
+
+    private void updateForecastUi(ForecastItemData forecastItemData) {
+        //TODO init forecast weather item view;
     }
 
 }
