@@ -19,26 +19,12 @@ public class WeatherFetchManager {
     private static final String TAG = WeatherFetchManager.class.getSimpleName();
     private static ApiInterface sApiInterface;
 
-    public void getCurrentWeather(String city, final MutableLiveData<CurrentWeatherItemData> currentLiveData) {
-        getApiInterface().getForeCast(UrlUtils.getForecastUrlForCity(city)).enqueue(new Callback<ForecastModel>() {
-            @Override
-            public void onResponse(Call<ForecastModel> call, Response<ForecastModel> response) {
-                currentLiveData.postValue(ConversionUtils.getCurretnWeatherDataFromForecastData(response.body()));
-            }
-
-            @Override
-            public void onFailure(Call<ForecastModel> call, Throwable t) {
-
-            }
-        });
-
-    }
-
-    public void getForecastForCity(String city, final MutableLiveData<ForecastItemData> forecastLiveData) {
+    public void getForecastForCity(String city, final MutableLiveData<ForecastItemData> forecastLiveData, final MutableLiveData<CurrentWeatherItemData> currentLiveData) {
             getApiInterface().getForeCast(UrlUtils.getForecastUrlForCity(city)).enqueue(new Callback<ForecastModel>() {
                 @Override
                 public void onResponse(Call<ForecastModel> call, Response<ForecastModel> response) {
                     forecastLiveData.postValue(ConversionUtils.getForecastItemDataFromForecastData(response.body()));
+                    currentLiveData.postValue(ConversionUtils.getCurretnWeatherDataFromForecastData(response.body()));
                 }
 
                 @Override

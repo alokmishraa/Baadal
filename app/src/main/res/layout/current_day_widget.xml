@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/city"
+        style="@style/AllTextColor"
+        tools:text="city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/current_temp"
+        android:layout_below="@+id/city"
+        style="@style/AllTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_below="@+id/current_temp"
+        style="@style/AllTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/high"
+        android:layout_below="@+id/text"
+        style="@style/AllTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/low"
+        android:layout_below="@+id/high"
+        style="@style/AllTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/day"
+        android:layout_below="@+id/low"
+        style="@style/AllTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget>
