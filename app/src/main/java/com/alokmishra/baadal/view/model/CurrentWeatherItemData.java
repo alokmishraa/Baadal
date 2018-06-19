@@ -18,14 +18,13 @@ public class CurrentWeatherItemData {
     public CurrentWeatherItemData (ForecastModel forecast) {
         Channel channel = forecast.getQuery().getResults().getChannel();
 
-        //TODO change to String buffer
-        this.mCity = channel.getLocation().getCity() + ", "
-                     + channel.getLocation().getRegion() + ", "
-                     + channel.getLocation().getCountry();
+        this.mCity = new StringBuilder(channel.getLocation().getCity()).append( ", ").append(
+                      channel.getLocation().getRegion()).append(", ").append(
+                      channel.getLocation().getCountry()).toString();
 
-        this.mCurrentTemp = channel.getItem().getCondition().getTemp()+ " \u2109";
-        this.mHighTemp = channel.getItem().getForecast().get(0).getHigh();
-        this.mLowTemp = channel.getItem().getForecast().get(0).getLow();
+        this.mCurrentTemp = new StringBuilder(channel.getItem().getCondition().getTemp()).append(" \u2103").toString();
+        this.mHighTemp = new StringBuilder(channel.getItem().getForecast().get(0).getHigh()).append(" \u2103").toString();
+        this.mLowTemp = new StringBuilder(channel.getItem().getForecast().get(0).getLow()).append(" \u2103").toString();
         this.mSunRise = channel.getAstronomy().getSunrise();
         this.mSunSet = channel.getAstronomy().getSunset();
         this.mWindSpeed = channel.getWind().getSpeed();
