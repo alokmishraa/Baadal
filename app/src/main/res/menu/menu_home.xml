@@ -6,6 +6,6 @@
         android:id="@+id/action_search"
         android:orderInCategory="100"
         android:title="Search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/search"
         app:showAsAction="always" />
 </menu>
