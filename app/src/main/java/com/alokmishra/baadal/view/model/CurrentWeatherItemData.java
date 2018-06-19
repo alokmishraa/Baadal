@@ -22,8 +22,8 @@ public class CurrentWeatherItemData {
         this.mCity = channel.getLocation().getCity() + ", "
                      + channel.getLocation().getRegion() + ", "
                      + channel.getLocation().getCountry();
-        //TODO add temprature degree sign
-        this.mCurrentTemp = channel.getItem().getCondition().getTemp();
+
+        this.mCurrentTemp = channel.getItem().getCondition().getTemp()+ " \u2109";
         this.mHighTemp = channel.getItem().getForecast().get(0).getHigh();
         this.mLowTemp = channel.getItem().getForecast().get(0).getLow();
         this.mSunRise = channel.getAstronomy().getSunrise();
