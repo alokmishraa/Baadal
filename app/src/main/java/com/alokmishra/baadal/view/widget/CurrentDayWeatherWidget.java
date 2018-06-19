@@ -2,10 +2,12 @@ package com.alokmishra.baadal.view.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alokmishra.baadal.R;
+import com.alokmishra.baadal.module.util.CommonUtils;
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 
 public class CurrentDayWeatherWidget extends RelativeLayout implements BasicViewWidget<CurrentWeatherItemData>{
@@ -13,13 +15,15 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
     private TextView mCurrentTemp;
     private TextView mHighTemp;
     private TextView mLowTemp;
-    private TextView mText;
+    private TextView mDesc;
     private TextView mDay;
     private TextView mWindSpeed;
     private TextView mSunRise;
     private TextView mSunSet;
     private TextView mCity;
-    
+    private TextView mHumid;
+    private ImageView mForecastIcon;
+
     public CurrentDayWeatherWidget(Context context) {
         super(context);
     }
@@ -36,20 +40,28 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
     protected void onFinishInflate() {
         super.onFinishInflate();
         mCity = findViewById(R.id.city);
-        mDay = findViewById(R.id.day);
-        mText = findViewById(R.id.text);
+        mDesc =  findViewById(R.id.desc);
         mHighTemp = findViewById(R.id.high);
         mLowTemp = findViewById(R.id.low);
         mCurrentTemp = findViewById(R.id.current_temp);
+        mDay = findViewById(R.id.day);
+        mCity =  findViewById(R.id.city);
+        mHumid =  findViewById(R.id.humid);
+        mWindSpeed =  findViewById(R.id.wind);
+        mForecastIcon = findViewById(R.id.forecast_icon);
     }
 
     @Override
     public void setData(CurrentWeatherItemData data) {
         mCity.setText(data.getCity());
+        mDesc.setText(data.getText());
         mHighTemp.setText(data.getHighTemp());
         mLowTemp.setText(data.getLowTemp());
-        mText.setText(data.getText());
         mCurrentTemp.setText(data.getCurrentTemp());
         mDay.setText(data.getDay());
+        mCity.setText(data.getCity());
+        mHumid.setText(data.getHumidity());
+        mWindSpeed.setText(data.getWindSpeed());
+        mForecastIcon.setImageResource(CommonUtils.getWeatherDrawableResource(data.getText()));
     }
 }

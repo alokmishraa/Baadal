@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alokmishra.baadal.R;
+import com.alokmishra.baadal.module.util.CommonUtils;
 import com.alokmishra.baadal.view.model.SingleDayForecastItemData;
 
 public class SingleDayForecastWidget extends LinearLayout implements  BasicViewWidget<SingleDayForecastItemData> {
@@ -15,8 +16,8 @@ public class SingleDayForecastWidget extends LinearLayout implements  BasicViewW
     private TextView mDay;
     private TextView mHigh;
     private TextView mLow;
-    private ImageView mIcon;
-
+    private ImageView mForecastIcon;
+    
     public SingleDayForecastWidget(Context context) {
         super(context);
     }
@@ -35,7 +36,7 @@ public class SingleDayForecastWidget extends LinearLayout implements  BasicViewW
         mDay = findViewById(R.id.day);
         mHigh = findViewById(R.id.high);
         mLow = findViewById(R.id.low);
-        mIcon = findViewById(R.id.forecast_icon);
+        mForecastIcon = findViewById(R.id.forecast_icon);
     }
 
     @Override
@@ -43,6 +44,6 @@ public class SingleDayForecastWidget extends LinearLayout implements  BasicViewW
         mDay.setText(data.getDay());
         mHigh.setText(data.getHighTemp());
         mLow.setText(data.getLowTemp());
-        //TODO add image from UTILITY
+        mForecastIcon.setImageResource(CommonUtils.getWeatherDrawableResource(data.getText()));
     }
 }

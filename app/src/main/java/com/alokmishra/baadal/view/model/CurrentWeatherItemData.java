@@ -14,6 +14,7 @@ public class CurrentWeatherItemData {
     private String mSunRise;
     private String mSunSet;
     private String mCity;
+    private String mHumidity;
 
     public CurrentWeatherItemData (ForecastModel forecast) {
         Channel channel = forecast.getQuery().getResults().getChannel();
@@ -27,9 +28,10 @@ public class CurrentWeatherItemData {
         this.mLowTemp = new StringBuilder(channel.getItem().getForecast().get(0).getLow()).append(" \u2103").toString();
         this.mSunRise = channel.getAstronomy().getSunrise();
         this.mSunSet = channel.getAstronomy().getSunset();
-        this.mWindSpeed = channel.getWind().getSpeed();
+        this.mWindSpeed = new StringBuilder().append(channel.getWind().getSpeed()).append("kmh").toString();
         this.mText = channel.getItem().getCondition().getText();
         this.mDay = channel.getItem().getForecast().get(0).getDay();
+        this.mHumidity = new StringBuilder().append(channel.getAtmosphere().getHumidity()).append("%").toString();
     }
 
     public String getCurrentTemp() {
@@ -66,5 +68,9 @@ public class CurrentWeatherItemData {
 
     public String getCity() {
         return mCity;
+    }
+
+    public String getHumidity() {
+        return mHumidity;
     }
 }
