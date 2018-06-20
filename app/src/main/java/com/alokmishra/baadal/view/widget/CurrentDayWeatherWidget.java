@@ -17,7 +17,6 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
     private TextView mHighTemp;
     private TextView mLowTemp;
     private TextView mDesc;
-    private TextView mDay;
     private TextView mWindSpeed;
     private TextView mSunRise;
     private TextView mSunSet;
@@ -45,7 +44,6 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
         mHighTemp = findViewById(R.id.high);
         mLowTemp = findViewById(R.id.low);
         mCurrentTemp = findViewById(R.id.current_temp);
-        mDay = findViewById(R.id.day);
         mCity =  findViewById(R.id.city);
         mHumid =  findViewById(R.id.humid);
         mWindSpeed =  findViewById(R.id.wind);
@@ -59,7 +57,6 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
         mHighTemp.setText(data.getHighTemp());
         mLowTemp.setText(data.getLowTemp());
         mCurrentTemp.setText(data.getCurrentTemp());
-        mDay.setText(data.getDay());
         mCity.setText(data.getCity());
         mHumid.setText(data.getHumidity());
         mWindSpeed.setText(data.getWindSpeed());
