@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout mForecastContainer;
     private LayoutInflater mInflator;
     private CurrentDayWeatherWidget mCurrentDayWeatherWidget;
+    private static final int NEXT_FORECAST_DAYS = 7; // Do not exceed more then 9
 
     public static final String TAG = HomeFragment.class.getSimpleName();
     public static HomeFragment newInstance() {
@@ -86,9 +89,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateForecastUi(ForecastItemData forecastItemData) {
-        for(SingleDayForecastItemData item : forecastItemData.getForecastList()) {
+        mForecastContainer.removeAllViews();
+        for (int i = 1; i <= NEXT_FORECAST_DAYS; i++) {
+            SingleDayForecastItemData item = forecastItemData.getForecastList().get(i);
             SingleDayForecastWidget widget = (SingleDayForecastWidget) mInflator.inflate(R.layout.single_day_forecast, null);
-            widget.setData(item);
+            float alpha = ((float) i) / (NEXT_FORECAST_DAYS + 1);
+            Pair<SingleDayForecastItemData, Float> pair = new Pair<>(item, alpha);
+            widget.setData(pair);
             mForecastContainer.addView(widget);
         }
     }
