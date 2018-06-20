@@ -2,77 +2,104 @@
 <com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_back" />
 
     <LinearLayout
+        android:id="@+id/foreacst_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/forecast_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:id="@+id/desc"
+            style="@style/AllTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Mostly clear" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/current_temp"
+        style="@style/AllTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/foreacst_header"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/city"
+        style="@style/AllMiniText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/current_temp"
+        android:drawableLeft="@drawable/location" />
+
+    <!--<LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="8dp">
+    </LinearLayout>-->
 
-        <TextView
-            android:id="@+id/current_temp"
-            style="@style/AllTextColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="36sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/forecast_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
-
-            <TextView
-                android:id="@+id/desc"
-                style="@style/AllTextColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/day"
-            style="@style/AllTextColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/day"
+        style="@style/AllTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
 
-        <TextView
-            android:id="@+id/city"
-            style="@style/AllMiniText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:drawableLeft="@drawable/location" />
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/city"
+           android:layout_centerHorizontal="true"
+           android:orientation="horizontal">
+           <TextView
+               android:id="@+id/high"
+               style="@style/AllMiniText"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_margin="4dp"
+               android:drawableLeft="@drawable/high" />
 
-        <TextView
-            android:id="@+id/high"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:drawableLeft="@drawable/high" />
+           <TextView
+               android:id="@+id/low"
+               style="@style/AllMiniText"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_margin="4dp"
+               android:drawableLeft="@drawable/low" />
+       </LinearLayout>
 
-        <TextView
-            android:id="@+id/low"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:drawableLeft="@drawable/low" />
+
 
         <TextView
             android:id="@+id/humid"
+            style="@style/AllMiniText"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -80,12 +107,15 @@
 
         <TextView
             android:id="@+id/wind"
+            style="@style/AllMiniText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/wind" />
 
-    </LinearLayout>
+
 
 
 </com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget>

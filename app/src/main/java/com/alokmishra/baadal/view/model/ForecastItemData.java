@@ -10,14 +10,9 @@ import java.util.List;
 public class ForecastItemData {
 
     private List<SingleDayForecastItemData> mForecastList;
-    private String mCity;
 
     public ForecastItemData(ForecastModel model) {
         Channel channel = model.getQuery().getResults().getChannel();
-        //TODO change to String buffer
-        this.mCity = channel.getLocation().getCity() + ", "
-                + channel.getLocation().getRegion() + ", "
-                + channel.getLocation().getCountry();
 
         List<Forecast> forecastList = channel.getItem().getForecast();
         this.mForecastList = new ArrayList<>();
@@ -25,12 +20,8 @@ public class ForecastItemData {
             mForecastList.add(new SingleDayForecastItemData(forecast));
         }
     }
-
     public List<SingleDayForecastItemData> getForecastList() {
         return mForecastList;
     }
 
-    public String getCity() {
-        return mCity;
-    }
 }

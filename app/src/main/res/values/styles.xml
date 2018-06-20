@@ -19,10 +19,20 @@
 
     <style name="AllTextColor" parent="TextAppearance.AppCompat">
         <item name="android:textColor">#fff</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
     <style name="AllMiniText" parent="AllTextColor">
-        <item name="android:drawablePadding">2dp</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ForecastItemIndividual" parent="AllTextColor">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
     </style>
 
 </resources>
