@@ -1,8 +1,10 @@
 package com.alokmishra.baadal;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,17 +12,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.alokmishra.baadal.module.places.PlaceProvider;
+import com.alokmishra.baadal.module.util.Constants;
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 import com.alokmishra.baadal.view.model.ForecastItemData;
 import com.alokmishra.baadal.view.model.SingleDayForecastItemData;
 import com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget;
 import com.alokmishra.baadal.view.widget.SingleDayForecastWidget;
 import com.alokmishra.baadal.viewmodel.ForecastViewModel;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -46,6 +56,7 @@ public class HomeFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
         mViewModel.init();
         mInflator = LayoutInflater.from(context);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -100,4 +111,38 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.RequestCodes.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+                mViewModel.start(place.getName().toString());
+            } else {
+                Toast.makeText(getActivity(), "Error in search", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                startSearch();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void startSearch() {
+        Intent intent = PlaceProvider.getInstance().getSearchIntent(getActivity());
+        startActivityForResult(intent, Constants.RequestCodes.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+    }
 }
