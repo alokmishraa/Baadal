@@ -52,7 +52,7 @@ public class SingleDayForecastWidget extends LinearLayout implements BasicViewWi
         mHigh.setText(data.getHighTemp());
         mLow.setText(data.getLowTemp());
         mForecastIcon.setImageResource(CommonUtils.getWeatherDrawableResource(data.getText()));
-        int opcityInt = 100 + (int) (pair.second * 100);
-        mSingleDayContainer.setBackgroundColor(ColorUtils.setAlphaComponent(getResources().getColor(R.color.colorPrimary), opcityInt));
+        int opcityInt = 50 + (int) (pair.second * 80);
+        mSingleDayContainer.setBackgroundColor(ColorUtils.setAlphaComponent(getResources().getColor(android.R.color.black), opcityInt));
     }
 }

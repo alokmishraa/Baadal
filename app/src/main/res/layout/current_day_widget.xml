@@ -64,28 +64,50 @@
             android:layout_alignParentLeft="true"
             android:orientation="vertical"
             android:padding="16dp">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <ImageView
                     style="@style/ItemImageStyle"
-                    android:src="@drawable/humidity" />
+                    android:src="@drawable/sunrise" />
+
                 <TextView
-                    android:id="@+id/humid"
+                    android:id="@+id/sunrise"
                     style="@style/ItemTextStyle" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/ItemImageStyle"
+                    android:src="@drawable/sunset" />
+
+                <TextView
+                    android:id="@+id/sunset"
+                    style="@style/ItemTextStyle" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <ImageView
                     style="@style/ItemImageStyle"
                     android:src="@drawable/wind" />
+
                 <TextView
                     android:id="@+id/wind"
                     style="@style/ItemTextStyle" />
@@ -114,7 +136,23 @@
 
                 <TextView
                     android:id="@+id/high"
-                    style="@style/ItemTextStyle"/>
+                    style="@style/ItemTextStyle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/ItemImageStyle"
+                    android:src="@drawable/low" />
+
+                <TextView
+                    android:id="@+id/low"
+                    style="@style/ItemTextStyle" />
             </LinearLayout>
 
             <LinearLayout
@@ -122,13 +160,16 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <ImageView
                     style="@style/ItemImageStyle"
-                    android:src="@drawable/low" />
+                    android:src="@drawable/humidity" />
+
                 <TextView
-                    android:id="@+id/low"
+                    android:id="@+id/humid"
                     style="@style/ItemTextStyle" />
             </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 

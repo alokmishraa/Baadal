@@ -25,7 +25,7 @@ public class CurrentWeatherItemData {
         this.mLowTemp = new StringBuilder(channel.getItem().getForecast().get(0).getLow()).append("\u2103").toString();
         this.mSunRise = channel.getAstronomy().getSunrise();
         this.mSunSet = channel.getAstronomy().getSunset();
-        this.mWindSpeed = new StringBuilder().append(channel.getWind().getSpeed()).append(" kmh").toString();
+        this.mWindSpeed = new StringBuilder().append(channel.getWind().getSpeed()).append(" kph").toString();
         this.mText = channel.getItem().getCondition().getText();
         this.mDay = channel.getItem().getForecast().get(0).getDay();
         this.mHumidity = new StringBuilder().append(channel.getAtmosphere().getHumidity()).append("%").toString();

@@ -48,6 +48,8 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
         mHumid =  findViewById(R.id.humid);
         mWindSpeed =  findViewById(R.id.wind);
         mForecastIcon = findViewById(R.id.forecast_icon);
+        mSunRise = findViewById(R.id.sunrise);
+        mSunSet = findViewById(R.id.sunset);
     }
 
     @Override
@@ -61,5 +63,7 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
         mHumid.setText(data.getHumidity());
         mWindSpeed.setText(data.getWindSpeed());
         mForecastIcon.setImageResource(CommonUtils.getWeatherDrawableResource(data.getText()));
+        mSunRise.setText(data.getSunRise());
+        mSunSet.setText(data.getSunSet());
     }
 }
