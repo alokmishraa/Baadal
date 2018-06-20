@@ -65,5 +65,6 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
         mForecastIcon.setImageResource(CommonUtils.getWeatherDrawableResource(data.getText()));
         mSunRise.setText(data.getSunRise());
         mSunSet.setText(data.getSunSet());
+        setVisibility(VISIBLE);
     }
 }

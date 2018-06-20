@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.alokmishra.baadal.view.widget.CurrentDayWeatherWidget xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/current_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:visibility="invisible"
     android:orientation="horizontal">
 
     <TextView
@@ -41,20 +43,35 @@
             android:textSize="48dp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/city"
-        style="@style/AllMiniText"
+    <LinearLayout
+        android:id="@+id/city_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_below="@+id/foreacst_header"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical"
         android:layout_centerHorizontal="true"
-        android:layout_margin="4dp"
-        android:drawableLeft="@drawable/location" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/location"
+            android:layout_height="12dp"
+            android:layout_width="12dp"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="6dp"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/city"
+            android:textSize="12dp"
+            style="@style/AllMiniText" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/city"
+        android:layout_below="@+id/city_container"
         android:layout_marginBottom="32dp"
         android:layout_marginTop="12dp">
 
