@@ -2,13 +2,20 @@ package com.alokmishra.baadal.module.places;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.alokmishra.baadal.R;
 import com.alokmishra.baadal.module.util.Constants;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -85,7 +92,40 @@ public class PlaceProvider {
             }
         });
         placeResult.addOnFailureListener(failureListener);
+    }
 
+
+    public boolean checkLocation(final Context context) {
+        if(!isLocationEnabled(context)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.gps_not_found_title);  // GPS not found
+            builder.setMessage(R.string.gps_not_found_message); // Want to enable?
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                }
+            });
+            builder.create().show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    private boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+        } else {
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
     }
 
 }

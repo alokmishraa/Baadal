@@ -146,7 +146,9 @@ public class HomeFragment extends Fragment {
                 startSearch();
                 return true;
             case R.id.action_locate:
-                getCurrentCity();
+                if (PlaceProvider.getInstance().checkLocation(getActivity())) {
+                    getCurrentCity();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -205,6 +207,7 @@ public class HomeFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getCurrentCity();
                 } else {
+                    progreeBar.setVisibility(View.GONE);
                     showLocationErrorDialog();
                 }
         }
@@ -220,6 +223,7 @@ public class HomeFragment extends Fragment {
     private OnFailureListener mOnFailureListener = new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
+            progreeBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "Error while fetching current city", Toast.LENGTH_SHORT).show();
         }
     };
