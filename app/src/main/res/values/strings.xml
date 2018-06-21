@@ -10,4 +10,7 @@
     <string name="gps_not_found_title">Location</string>
     <string name="gps_not_found_message">Please turn on location service</string>
     <string name="no_cached_city">Please get current location or search for location</string>
+    <string name="error_network_check">Error : Check network</string>
+    <string name="error_fetch_city">Error while fetching current city</string>
+    <string name="ok">OK</string>
 </resources>

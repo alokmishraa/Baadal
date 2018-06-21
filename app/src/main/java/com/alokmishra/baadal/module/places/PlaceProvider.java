@@ -67,7 +67,7 @@ public class PlaceProvider {
         return new AutocompleteFilter.Builder().setTypeFilter(filterType).build();
     }
 
-    public void getCurrentCity(Fragment fragment, final PlaceFetchedListener listener, OnFailureListener failureListener) {
+    public void getCurrentCity(Fragment fragment, final PlaceFetchedListener listener, final OnFailureListener failureListener) {
 
         PlaceDetectionClient placeDetectionClient = Places.getPlaceDetectionClient(fragment.getActivity());
         if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -75,22 +75,27 @@ public class PlaceProvider {
             return;
         }
 
-        Task<PlaceLikelihoodBufferResponse> placeResult = placeDetectionClient.getCurrentPlace(null);
+        final Task<PlaceLikelihoodBufferResponse> placeResult = placeDetectionClient.getCurrentPlace(null);
+        placeResult.addOnFailureListener(failureListener);
         placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
             @Override
             public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                final List<Place> placesList = new ArrayList<Place>();
-                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    placesList.add(placeLikelihood.getPlace().freeze());
+                try {
+                    final List<Place> placesList = new ArrayList<Place>();
+                    PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+                    for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                        placesList.add(placeLikelihood.getPlace().freeze());
+                    }
+                    likelyPlaces.release();
+                    String[] arr = placesList.get(0).getAddress().toString().split(",");
+                    String city = arr[arr.length - 3];
+                    listener.onPlaceFetched(city);
+                } catch (Exception e) {
+                    listener.onFailure();
                 }
-                likelyPlaces.release();
-                String[] arr = placesList.get(0).getAddress().toString().split(",");
-                String city = arr[arr.length - 3];
-                listener.onPlaceFetched(city);
+
             }
         });
-        placeResult.addOnFailureListener(failureListener);
     }
 
 
@@ -99,7 +104,7 @@ public class PlaceProvider {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.gps_not_found_title);  // GPS not found
             builder.setMessage(R.string.gps_not_found_message); // Want to enable?
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 }

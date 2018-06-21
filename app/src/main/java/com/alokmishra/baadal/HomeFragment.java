@@ -188,7 +188,7 @@ public class HomeFragment extends Fragment {
     private void showLocationErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.permission_error)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -200,7 +200,7 @@ public class HomeFragment extends Fragment {
     private void askForInitialLocation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.no_cached_city)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -236,13 +236,18 @@ public class HomeFragment extends Fragment {
         public void onPlaceFetched(String city) {
             startWeatherFetch(city);
         }
+
+        @Override
+        public void onFailure() {
+            Toast.makeText(getActivity(), R.string.error_network_check, Toast.LENGTH_SHORT).show();
+        }
     };
 
     private OnFailureListener mOnFailureListener = new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
             progreeBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "Error while fetching current city", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error_fetch_city, Toast.LENGTH_SHORT).show();
         }
     };
 
