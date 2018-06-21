@@ -13,7 +13,7 @@
         android:id="@+id/action_locate"
         android:orderInCategory="100"
         android:title="Locate"
-        android:icon="@drawable/location"
+        android:icon="@drawable/menu_location"
         app:showAsAction="always" >
     </item>
 </menu>
