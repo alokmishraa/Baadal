@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.alokmishra.baadal.module.places.PlaceProvider;
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
     private static final int NEXT_FORECAST_DAYS = 7; // Do not exceed more then 9
 
     public static final String TAG = HomeFragment.class.getSimpleName();
+    private ProgressBar progreeBar;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -70,6 +72,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initView(View view) {
+        progreeBar = view.findViewById(R.id.progressBar);
         mForecastContainer = view.findViewById(R.id.forecast_container);
         mCurrentDayWeatherWidget = view.findViewById(R.id.current_day_widget);
     }
@@ -77,6 +80,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progreeBar.setVisibility(View.VISIBLE);
         initObservers();
         mViewModel.start("Noida", listener);
     }
@@ -98,10 +102,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateCurrentUi(CurrentWeatherItemData currentWeatherItemData) {
+        progreeBar.setVisibility(View.GONE);
         mCurrentDayWeatherWidget.setData(currentWeatherItemData);
     }
 
     private void updateForecastUi(ForecastItemData forecastItemData) {
+        progreeBar.setVisibility(View.GONE);
         mForecastContainer.removeAllViews();
         for (int i = 1; i <= NEXT_FORECAST_DAYS; i++) {
             SingleDayForecastItemData item = forecastItemData.getForecastList().get(i);
@@ -118,6 +124,7 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.RequestCodes.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
+                progreeBar.setVisibility(View.VISIBLE);
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
                 mViewModel.start(place.getName().toString(), listener);
             } else {
