@@ -1,7 +1,6 @@
 package com.alokmishra.baadal.view.model;
 
 import com.alokmishra.baadal.model.Channel;
-import com.alokmishra.baadal.model.Forecast;
 import com.alokmishra.baadal.model.ForecastModel;
 
 public class CurrentWeatherItemData {
@@ -16,7 +15,7 @@ public class CurrentWeatherItemData {
     private String mCity;
     private String mHumidity;
 
-    public CurrentWeatherItemData (ForecastModel forecast) {
+    public CurrentWeatherItemData(ForecastModel forecast) {
         Channel channel = forecast.getQuery().getResults().getChannel();
 
         this.mCity = new StringBuilder(channel.getLocation().getCity()).toString();

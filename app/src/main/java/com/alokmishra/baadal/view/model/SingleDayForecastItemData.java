@@ -9,8 +9,8 @@ public class SingleDayForecastItemData {
     private String mDay;
 
     public SingleDayForecastItemData(Forecast forecast) {
-        mHighTemp = new StringBuilder().append(forecast.getHigh()).append("\u2103").toString();
-        mLowTemp = new StringBuilder().append(forecast.getLow()).append("\u2103").toString();
+        mHighTemp = new StringBuilder().append(forecast.getHigh()).append("\u2103").append("\u2191").toString();
+        mLowTemp = new StringBuilder().append(forecast.getLow()).append("\u2103").append("\u2193").toString();
         mDay = forecast.getDay();
         mText = forecast.getText();
     }

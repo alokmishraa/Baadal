@@ -53,8 +53,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar progreeBar;
 
     public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -130,7 +129,7 @@ public class HomeFragment extends Fragment {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
                 startWeatherFetch(place.getName().toString());
             } else {
-                Toast.makeText(getActivity(), "Error in search", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.search_error, Toast.LENGTH_SHORT).show();
             }
         }
     }

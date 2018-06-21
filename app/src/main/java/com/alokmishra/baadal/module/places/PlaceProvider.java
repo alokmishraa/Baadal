@@ -2,7 +2,6 @@ package com.alokmishra.baadal.module.places;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -48,8 +47,7 @@ public class PlaceProvider {
     public Intent getSearchIntent(Activity activity) {
         try {
             AutocompleteFilter filter = getFilterBbyType(AutocompleteFilter.TYPE_FILTER_CITIES);
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).setFilter(filter).build(activity);
-            return intent;
+            return new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).setFilter(filter).build(activity);
         } catch (GooglePlayServicesRepairableException e) {
             e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
@@ -58,9 +56,8 @@ public class PlaceProvider {
         return null;
     }
 
-    public AutocompleteFilter getFilterBbyType(int filterType) {
-        AutocompleteFilter filter = new AutocompleteFilter.Builder().setTypeFilter(filterType).build();
-        return filter;
+    private AutocompleteFilter getFilterBbyType(int filterType) {
+        return new AutocompleteFilter.Builder().setTypeFilter(filterType).build();
     }
 
     public void getCurrentCity(Activity context, final PlaceFetchedListener listener) {
