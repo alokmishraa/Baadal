@@ -21,5 +21,6 @@
 #-renamesourcefileattribute SourceFile
 -dontnote retrofit2.Platform
 -dontwarn retrofit2.Platform$Java8
+-dontwarn okio.**
 -keepattributes Signature
 -keepattributes Exceptions

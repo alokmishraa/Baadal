@@ -7,4 +7,7 @@
     <string name="network_error">Network Error</string>
     <string name="permission_error">No permission granted, please search places for the result</string>
     <string name="search_error">Error in search</string>
+    <string name="gps_not_found_title">Location</string>
+    <string name="gps_not_found_message">Please turn on location service</string>
+    <string name="no_cached_city">Please get current location or search for location</string>
 </resources>

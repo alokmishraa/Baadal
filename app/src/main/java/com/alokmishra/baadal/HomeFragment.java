@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.alokmishra.baadal.module.places.PlaceFetchedListener;
 import com.alokmishra.baadal.module.places.PlaceProvider;
+import com.alokmishra.baadal.module.util.CommonUtils;
 import com.alokmishra.baadal.module.util.Constants;
 import com.alokmishra.baadal.module.util.OnNetworkFailureListener;
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
@@ -35,6 +37,7 @@ import com.alokmishra.baadal.view.widget.SingleDayForecastWidget;
 import com.alokmishra.baadal.viewmodel.ForecastViewModel;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.tasks.OnFailureListener;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -80,9 +83,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progreeBar.setVisibility(View.VISIBLE);
         initObservers();
-        startWeatherFetch("Noida");
+        String city = CommonUtils.getSavedCity();
+        if (!TextUtils.isEmpty(city)) {
+            startWeatherFetch(city);
+        } else {
+            askForInitialLocation();
+        }
     }
 
     private void initObservers() {
@@ -145,7 +152,9 @@ public class HomeFragment extends Fragment {
                 startSearch();
                 return true;
             case R.id.action_locate:
-                PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
+                if (PlaceProvider.getInstance().checkLocation(getActivity())) {
+                    getCurrentCity();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -183,10 +192,17 @@ public class HomeFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                });
+        builder.create();
+        builder.show();
+    }
+
+    private void askForInitialLocation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.no_cached_city)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        getActivity().finish();
+                        dialog.dismiss();
                     }
                 });
         builder.create();
@@ -207,8 +223,9 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case Constants.RequestCodes.PLACE_REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
+                    getCurrentCity();
                 } else {
+                    progreeBar.setVisibility(View.GONE);
                     showLocationErrorDialog();
                 }
         }
@@ -221,8 +238,21 @@ public class HomeFragment extends Fragment {
         }
     };
 
+    private OnFailureListener mOnFailureListener = new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            progreeBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "Error while fetching current city", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     private void startWeatherFetch(String city) {
         progreeBar.setVisibility(View.VISIBLE);
         mViewModel.start(city, mNetworkErrorListener);
+    }
+
+    private void getCurrentCity() {
+        progreeBar.setVisibility(View.VISIBLE);
+        PlaceProvider.getInstance().getCurrentCity(this, mPlaceFetchedListener, mOnFailureListener);
     }
 }
