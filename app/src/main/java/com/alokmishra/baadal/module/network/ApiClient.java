@@ -2,7 +2,6 @@ package com.alokmishra.baadal.module.network;
 
 import com.alokmishra.baadal.BaadalApp;
 import com.alokmishra.baadal.module.util.CommonUtils;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
 
