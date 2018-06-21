@@ -35,6 +35,7 @@ import com.alokmishra.baadal.view.widget.SingleDayForecastWidget;
 import com.alokmishra.baadal.viewmodel.ForecastViewModel;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.tasks.OnFailureListener;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -145,7 +146,7 @@ public class HomeFragment extends Fragment {
                 startSearch();
                 return true;
             case R.id.action_locate:
-                PlaceProvider.getInstance().getCurrentCity(this, mPlaceFetchedListener);
+                getCurrentCity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -202,7 +203,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case Constants.RequestCodes.PLACE_REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PlaceProvider.getInstance().getCurrentCity(this, mPlaceFetchedListener);
+                    getCurrentCity();
                 } else {
                     showLocationErrorDialog();
                 }
@@ -216,8 +217,20 @@ public class HomeFragment extends Fragment {
         }
     };
 
+    private OnFailureListener mOnFailureListener = new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            Toast.makeText(getActivity(), "Error while fetching current city", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     private void startWeatherFetch(String city) {
         progreeBar.setVisibility(View.VISIBLE);
         mViewModel.start(city, mNetworkErrorListener);
+    }
+
+    private void getCurrentCity() {
+        progreeBar.setVisibility(View.VISIBLE);
+        PlaceProvider.getInstance().getCurrentCity(this, mPlaceFetchedListener, mOnFailureListener);
     }
 }

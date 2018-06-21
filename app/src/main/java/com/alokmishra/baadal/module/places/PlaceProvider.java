@@ -21,6 +21,7 @@ import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class PlaceProvider {
         return new AutocompleteFilter.Builder().setTypeFilter(filterType).build();
     }
 
-    public void getCurrentCity(Fragment fragment, final PlaceFetchedListener listener) {
+    public void getCurrentCity(Fragment fragment, final PlaceFetchedListener listener, OnFailureListener failureListener) {
 
         PlaceDetectionClient placeDetectionClient = Places.getPlaceDetectionClient(fragment.getActivity());
         if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -83,6 +84,7 @@ public class PlaceProvider {
                 listener.onPlaceFetched(city);
             }
         });
+        placeResult.addOnFailureListener(failureListener);
 
     }
 
