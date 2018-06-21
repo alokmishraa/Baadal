@@ -1,15 +1,16 @@
 package com.alokmishra.baadal;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,11 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.alokmishra.baadal.module.places.PlaceProvider;
 import com.alokmishra.baadal.module.util.Constants;
+import com.alokmishra.baadal.module.util.OnNetworkFailureListener;
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 import com.alokmishra.baadal.view.model.ForecastItemData;
 import com.alokmishra.baadal.view.model.SingleDayForecastItemData;
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     private static final int NEXT_FORECAST_DAYS = 7; // Do not exceed more then 9
 
     public static final String TAG = HomeFragment.class.getSimpleName();
+
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
@@ -76,14 +78,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initObservers();
-        mViewModel.start("Noida");
+        mViewModel.start("Noida", listener);
     }
 
     private void initObservers() {
         mViewModel.getCurrentLiveData().observe(this, new Observer<CurrentWeatherItemData>() {
             @Override
             public void onChanged(@Nullable CurrentWeatherItemData currentWeatherItemData) {
-                 updateCurrentUi(currentWeatherItemData);
+                updateCurrentUi(currentWeatherItemData);
             }
         });
 
@@ -117,7 +119,7 @@ public class HomeFragment extends Fragment {
         if (requestCode == Constants.RequestCodes.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                mViewModel.start(place.getName().toString());
+                mViewModel.start(place.getName().toString(), listener);
             } else {
                 Toast.makeText(getActivity(), "Error in search", Toast.LENGTH_SHORT).show();
             }
@@ -145,4 +147,30 @@ public class HomeFragment extends Fragment {
         Intent intent = PlaceProvider.getInstance().getSearchIntent(getActivity());
         startActivityForResult(intent, Constants.RequestCodes.PLACE_AUTOCOMPLETE_REQUEST_CODE);
     }
+
+    private void showErrorDialog(final String city) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.network_error)
+                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mViewModel.start(city, listener);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        getActivity().finish();
+                    }
+                });
+        builder.setCancelable(false);
+        builder.create();
+        builder.show();
+    }
+
+    OnNetworkFailureListener listener = new OnNetworkFailureListener() {
+        @Override
+        public void onFailure(String city) {
+            showErrorDialog(city);
+        }
+    };
+
 }

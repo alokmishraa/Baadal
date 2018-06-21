@@ -2,4 +2,7 @@
     <string name="app_name">Baadal</string>
     <string name="title_activity_home">Baadal</string>
     <string name="action_settings">Settings</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="network_error">Network Error</string>
 </resources>
