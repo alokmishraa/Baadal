@@ -9,4 +9,5 @@
     <string name="search_error">Error in search</string>
     <string name="gps_not_found_title">Location</string>
     <string name="gps_not_found_message">Please turn on location service</string>
+    <string name="no_cached_city">Please get current location or search for location</string>
 </resources>

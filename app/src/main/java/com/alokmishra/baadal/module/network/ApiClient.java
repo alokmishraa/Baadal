@@ -1,8 +1,16 @@
 package com.alokmishra.baadal.module.network;
 
+import com.alokmishra.baadal.BaadalApp;
+import com.alokmishra.baadal.module.util.CommonUtils;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
+import java.io.IOException;
+
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,14 +22,9 @@ public class ApiClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(getOkHttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;
-    }
-
-    private static OkHttpClient getOkHttpClient() {
-        return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build();
     }
 }

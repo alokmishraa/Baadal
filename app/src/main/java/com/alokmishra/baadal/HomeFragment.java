@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.alokmishra.baadal.module.places.PlaceFetchedListener;
 import com.alokmishra.baadal.module.places.PlaceProvider;
+import com.alokmishra.baadal.module.util.CommonUtils;
 import com.alokmishra.baadal.module.util.Constants;
 import com.alokmishra.baadal.module.util.OnNetworkFailureListener;
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
@@ -81,9 +83,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progreeBar.setVisibility(View.VISIBLE);
         initObservers();
-        startWeatherFetch("Noida");
+        String city = CommonUtils.getSavedCity();
+        if (!TextUtils.isEmpty(city)) {
+            startWeatherFetch(city);
+        } else {
+            askForInitialLocation();
+        }
     }
 
     private void initObservers() {
@@ -182,6 +188,18 @@ public class HomeFragment extends Fragment {
     private void showLocationErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.permission_error)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
+
+    private void askForInitialLocation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.no_cached_city)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
