@@ -3,7 +3,6 @@ package com.alokmishra.baadal.view.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -11,7 +10,7 @@ import com.alokmishra.baadal.R;
 import com.alokmishra.baadal.module.util.CommonUtils;
 import com.alokmishra.baadal.view.model.CurrentWeatherItemData;
 
-public class CurrentDayWeatherWidget extends RelativeLayout implements BasicViewWidget<CurrentWeatherItemData>{
+public class CurrentDayWeatherWidget extends RelativeLayout implements BasicViewWidget<CurrentWeatherItemData> {
 
     private TextView mCurrentTemp;
     private TextView mHighTemp;
@@ -40,13 +39,13 @@ public class CurrentDayWeatherWidget extends RelativeLayout implements BasicView
     protected void onFinishInflate() {
         super.onFinishInflate();
         mCity = findViewById(R.id.city);
-        mDesc =  findViewById(R.id.desc);
+        mDesc = findViewById(R.id.desc);
         mHighTemp = findViewById(R.id.high);
         mLowTemp = findViewById(R.id.low);
         mCurrentTemp = findViewById(R.id.current_temp);
-        mCity =  findViewById(R.id.city);
-        mHumid =  findViewById(R.id.humid);
-        mWindSpeed =  findViewById(R.id.wind);
+        mCity = findViewById(R.id.city);
+        mHumid = findViewById(R.id.humid);
+        mWindSpeed = findViewById(R.id.wind);
         mForecastIcon = findViewById(R.id.forecast_icon);
         mSunRise = findViewById(R.id.sunrise);
         mSunSet = findViewById(R.id.sunset);
