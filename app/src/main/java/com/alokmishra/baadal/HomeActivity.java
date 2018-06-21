@@ -14,15 +14,17 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
+        if(savedInstanceState == null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, HomeFragment.newInstance(), HomeFragment.TAG)
+                    .commit();
+        }
     }
 
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.container, HomeFragment.newInstance(), HomeFragment.TAG)
-                .commit();
     }
 
     @Override

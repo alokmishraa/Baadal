@@ -8,12 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -183,7 +181,7 @@ public class HomeFragment extends Fragment {
         builder.setMessage(R.string.permission_error)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                       dialog.dismiss();
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -207,8 +205,8 @@ public class HomeFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case Constants.RequestCodes.PLACE_REQUEST_PERMISSION :
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            case Constants.RequestCodes.PLACE_REQUEST_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
                 } else {
                     showLocationErrorDialog();
@@ -222,7 +220,7 @@ public class HomeFragment extends Fragment {
             startWeatherFetch(city);
         }
     };
-    
+
     private void startWeatherFetch(String city) {
         progreeBar.setVisibility(View.VISIBLE);
         mViewModel.start(city, mNetworkErrorListener);
