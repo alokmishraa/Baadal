@@ -40,7 +40,6 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 public class HomeFragment extends Fragment {
 
     private ForecastViewModel mViewModel;
-    private String mCity;
     private LinearLayout mForecastContainer;
     private LayoutInflater mInflator;
     private CurrentDayWeatherWidget mCurrentDayWeatherWidget;
@@ -50,8 +49,7 @@ public class HomeFragment extends Fragment {
     private ProgressBar progreeBar;
 
     public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -128,7 +126,7 @@ public class HomeFragment extends Fragment {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
                 mViewModel.start(place.getName().toString(), listener);
             } else {
-                Toast.makeText(getActivity(), "Error in search", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.search_error, Toast.LENGTH_SHORT).show();
             }
         }
     }
