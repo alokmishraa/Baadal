@@ -7,10 +7,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.alokmishra.baadal.module.places.PlaceFetchedListener;
 import com.alokmishra.baadal.module.places.PlaceProvider;
 import com.alokmishra.baadal.module.util.Constants;
 import com.alokmishra.baadal.module.util.OnNetworkFailureListener;
@@ -40,7 +44,6 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 public class HomeFragment extends Fragment {
 
     private ForecastViewModel mViewModel;
-    private String mCity;
     private LinearLayout mForecastContainer;
     private LayoutInflater mInflator;
     private CurrentDayWeatherWidget mCurrentDayWeatherWidget;
@@ -82,7 +85,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         progreeBar.setVisibility(View.VISIBLE);
         initObservers();
-        mViewModel.start("Noida", listener);
+        startWeatherFetch("Noida");
     }
 
     private void initObservers() {
@@ -124,9 +127,8 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constants.RequestCodes.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                progreeBar.setVisibility(View.VISIBLE);
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                mViewModel.start(place.getName().toString(), listener);
+                startWeatherFetch(place.getName().toString());
             } else {
                 Toast.makeText(getActivity(), "Error in search", Toast.LENGTH_SHORT).show();
             }
@@ -145,6 +147,9 @@ public class HomeFragment extends Fragment {
             case R.id.action_search:
                 startSearch();
                 return true;
+            case R.id.action_locate:
+                PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -156,11 +161,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void showErrorDialog(final String city) {
+        progreeBar.setVisibility(View.GONE);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.network_error)
                 .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mViewModel.start(city, listener);
+                        startWeatherFetch(city);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -173,11 +179,53 @@ public class HomeFragment extends Fragment {
         builder.show();
     }
 
-    OnNetworkFailureListener listener = new OnNetworkFailureListener() {
+    private void showLocationErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.permission_error)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                       dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        getActivity().finish();
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
+
+    private OnNetworkFailureListener mNetworkErrorListener = new OnNetworkFailureListener() {
         @Override
         public void onFailure(String city) {
             showErrorDialog(city);
         }
     };
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constants.RequestCodes.PLACE_REQUEST_PERMISSION :
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
+                } else {
+                    showLocationErrorDialog();
+                }
+        }
+    }
+
+    private PlaceFetchedListener mPlaceFetchedListener = new PlaceFetchedListener() {
+        @Override
+        public void onPlaceFetched(String city) {
+            startWeatherFetch(city);
+        }
+    };
+    
+    private void startWeatherFetch(String city) {
+        progreeBar.setVisibility(View.VISIBLE);
+        mViewModel.start(city, mNetworkErrorListener);
+    }
 }
