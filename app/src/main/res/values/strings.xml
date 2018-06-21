@@ -5,5 +5,6 @@
     <string name="retry">Retry</string>
     <string name="cancel">Cancel</string>
     <string name="network_error">Network Error</string>
+    <string name="permission_error">No permission granted, please search places for the result</string>
     <string name="search_error">Error in search</string>
 </resources>
