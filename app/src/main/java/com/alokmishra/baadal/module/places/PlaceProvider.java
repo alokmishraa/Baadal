@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.alokmishra.baadal.module.util.Constants;
@@ -23,7 +24,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PlaceProvider {
@@ -60,13 +60,14 @@ public class PlaceProvider {
         return new AutocompleteFilter.Builder().setTypeFilter(filterType).build();
     }
 
-    public void getCurrentCity(Activity context, final PlaceFetchedListener listener) {
-        PlaceDetectionClient placeDetectionClient = Places.getPlaceDetectionClient(context);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.RequestCodes.PLACE_REQUEST_PERMISSION);
+    public void getCurrentCity(Fragment fragment, final PlaceFetchedListener listener) {
 
+        PlaceDetectionClient placeDetectionClient = Places.getPlaceDetectionClient(fragment.getActivity());
+        if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            fragment.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.RequestCodes.PLACE_REQUEST_PERMISSION);
             return;
         }
+
         Task<PlaceLikelihoodBufferResponse> placeResult = placeDetectionClient.getCurrentPlace(null);
         placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
             @Override

@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
                 startSearch();
                 return true;
             case R.id.action_locate:
-                PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
+                PlaceProvider.getInstance().getCurrentCity(this, mPlaceFetchedListener);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -183,11 +183,6 @@ public class HomeFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        getActivity().finish();
-                    }
                 });
         builder.create();
         builder.show();
@@ -207,7 +202,7 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case Constants.RequestCodes.PLACE_REQUEST_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PlaceProvider.getInstance().getCurrentCity(getActivity(), mPlaceFetchedListener);
+                    PlaceProvider.getInstance().getCurrentCity(this, mPlaceFetchedListener);
                 } else {
                     showLocationErrorDialog();
                 }
